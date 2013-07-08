@@ -26,62 +26,83 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+//
+// -------------------------------------------------------------------
+// Portions Copyright (c) 2013 by Juergen Edelbluth
+// dev@jued.de https://github.com/edelbluth/map_lib
+// Published under the same license (MIT / X11)
+// -------------------------------------------------------------------
+// Forked from:
+// https://github.com/jimlawless/map_lib/
+// commit d3977cebcd229428fa9958aa840dbd1c003c3815
+// -------------------------------------------------------------------
+// Changes by Juergen Edelbluth
+// * Formatting
+// * stricmp -> strcmp (making the map case sensitive)
+// map -> mp (avoid reserved name collision)
+// -------------------------------------------------------------------
 
+#include "map_lib.h"
 #include <stdio.h>
 #include <malloc.h>
 #include <string.h>
-#include "map_lib.h"
 
-struct map_t *map_create() {
-   struct map_t *m;
-   m=(struct map_t *)malloc(sizeof(struct map_t));
-   m->name=NULL;
-   m->value=NULL;
-   m->nxt=NULL;
+struct map_t *map_create()
+{
+    struct map_t *m;
+    m = (struct map_t *) malloc(sizeof(struct map_t));
+    m->name = NULL;
+    m->value = NULL;
+    m->nxt = NULL;
 }
 
-
-void map_set(struct map_t *m,char *name,char *value) {
-   struct map_t *map;
-
-   if(m->name==NULL) {
-      m->name=(char *)malloc(strlen(name)+1);
-      strcpy(m->name,name);
-      m->value=(char *)malloc(strlen(value)+1);
-      strcpy(m->value,value);
-      m->nxt=NULL;
-      return;
-   }
-   for(map=m;;map=map->nxt) {
-      if(!stricmp(name,map->name)) {
-         if(map->value!=NULL) {
-            free(map->value);
-            map->value=(char *)malloc(strlen(value)+1);
-            strcpy(map->value,value);
+void map_set(struct map_t *m, char *name, char *value)
+{
+    struct map_t *mp;
+    if(m->name == NULL)
+    {
+        m->name = (char *) malloc(strlen(name) + 1);
+        strcpy(m->name, name);
+        m->value = (char *) malloc(strlen(value) + 1);
+        strcpy(m->value, value);
+        m->nxt = NULL;
+        return;
+    }
+    for(mp = m; ; mp = mp->nxt)
+    {
+        if (!stricmp(name, mp->name))
+        {
+            if (mp->value != NULL)
+            {
+                free(mp->value);
+                mp->value = (char *) malloc(strlen(value) + 1);
+                strcpy(mp->value, value);
+                return;
+            }
+        }
+        if (mp->nxt == NULL)
+        {
+            mp->nxt = (struct map_t *) malloc(sizeof(struct map_t));
+            mp = mp->nxt;
+            mp->name = (char *) malloc(strlen(name) + 1);
+            strcpy(mp->name, name);
+            mp->value = (char *) malloc(strlen(value) + 1);
+            strcpy(mp->value, value);
+            mp->nxt = NULL;
             return;
-         }
-      }
-      if(map->nxt==NULL) {
-         map->nxt=(struct map_t *)malloc(sizeof(struct map_t));
-         map=map->nxt;
-         map->name=(char *)malloc(strlen(name)+1);
-         strcpy(map->name,name);
-         map->value=(char *)malloc(strlen(value)+1);
-         strcpy(map->value,value);
-         map->nxt=NULL;
-         return;
-      }      
-   }
+        }
+    }
 }
 
-char *map_get(struct map_t *m,char *name) {
-   struct map_t *map;
-   for(map=m;map!=NULL;map=map->nxt) {
-      if(!stricmp(name,map->name)) {
-         return map->value;
-      }
-   }
-   return "";
+char *map_get(struct map_t *m, char *name)
+{
+    struct map_t *mp;
+    for(mp = m; mp != NULL; mp = mp->nxt)
+    {
+        if(!stricmp(name, mp->name))
+        {
+            return mp->value;
+        }
+    }
+    return NULL;
 }
- 
-
