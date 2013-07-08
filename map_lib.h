@@ -26,21 +26,34 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
+//
+// -------------------------------------------------------------------
+// Portions Copyright (c) 2013 by Juergen Edelbluth
+// dev@jued.de https://github.com/edelbluth/map_lib
+// Published under the same license (MIT / X11)
+// -------------------------------------------------------------------
+// Forked from:
+// https://github.com/jimlawless/map_lib/
+// commit d3977cebcd229428fa9958aa840dbd1c003c3815
+// -------------------------------------------------------------------
+// Changes by Juergen Edelbluth
+// * Formatting
+// * Minor Refactoring
+// -------------------------------------------------------------------
 
+#ifndef __MAP_LIB_H__
+#define __MAP_LIB_H__
 
-#ifndef MAP_LIB_H
-#define MAP_LIB_H
-
-struct map_t {
+struct map_t
+{
    struct map_t *nxt;
    char *name;
    char *value;
-} ;
-
+};
 
 struct map_t *map_create();
-void map_set(struct map_t *m,char *name,char *value);
-char *map_get(struct map_t *m,char *name);
+void map_set(struct map_t *m, char *name, char *value);
+char *map_get(struct map_t *m, char *name);
 
 #endif
- 
+
