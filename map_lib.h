@@ -39,6 +39,7 @@
 // Changes by Juergen Edelbluth
 // * Formatting
 // * Minor Refactoring
+// * Added Delete-Key functionality (stub)
 // -------------------------------------------------------------------
 
 #ifndef __MAP_LIB_H__
@@ -53,7 +54,9 @@ struct map_t
 
 struct map_t *map_create();
 void map_set(struct map_t *m, char *name, char *value);
+char *map_get_def(struct map_t *m, char *name, char *dflt);
 char *map_get(struct map_t *m, char *name);
+int map_del(struct map_t *m, char *name);
 
 #endif
 

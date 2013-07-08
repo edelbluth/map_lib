@@ -39,7 +39,8 @@
 // Changes by Juergen Edelbluth
 // * Formatting
 // * stricmp -> strcmp (making the map case sensitive)
-// map -> mp (avoid reserved name collision)
+// * map -> mp (avoid reserved name collision)
+// * Added Delete-Key functionality (stub)
 // -------------------------------------------------------------------
 
 #include "map_lib.h"
@@ -54,6 +55,7 @@ struct map_t *map_create()
     m->name = NULL;
     m->value = NULL;
     m->nxt = NULL;
+    return m;
 }
 
 void map_set(struct map_t *m, char *name, char *value)
@@ -96,13 +98,23 @@ void map_set(struct map_t *m, char *name, char *value)
 
 char *map_get(struct map_t *m, char *name)
 {
+    return map_get_def(m, name, NULL);
+}
+
+char *map_get_def(struct map_t *m, char *name, char *dflt)
+{
     struct map_t *mp;
     for(mp = m; mp != NULL; mp = mp->nxt)
     {
-        if(!strcmp(name, mp->name))
+        if (!strcmp(name, mp->name))
         {
             return mp->value;
         }
     }
-    return NULL;
+    return dflt;
+}
+
+int map_del(struct map_t *m, char *name)
+{
+    return 0;
 }
