@@ -70,7 +70,7 @@ void map_set(struct map_t *m, char *name, char *value)
     }
     for(mp = m; ; mp = mp->nxt)
     {
-        if (!stricmp(name, mp->name))
+        if (!strcmp(name, mp->name))
         {
             if (mp->value != NULL)
             {
@@ -99,7 +99,7 @@ char *map_get(struct map_t *m, char *name)
     struct map_t *mp;
     for(mp = m; mp != NULL; mp = mp->nxt)
     {
-        if(!stricmp(name, mp->name))
+        if(!strcmp(name, mp->name))
         {
             return mp->value;
         }
