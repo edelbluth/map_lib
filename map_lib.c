@@ -48,63 +48,70 @@
 #include <malloc.h>
 #include <string.h>
 
-struct map_t *map_create()
+struct map_head *map_create(char* name)
 {
-    struct map_t *m;
-    m = (struct map_t *) malloc(sizeof(struct map_t));
-    m->name = NULL;
-    m->value = NULL;
-    m->nxt = NULL;
-    return m;
+    struct map_head *head = (struct map_head *) malloc(sizeof(struct map_head));
+    head->first = NULL;
+    head->name = (char *) malloc(strlen(name) + 1);
+    strcpy(head->name, name);
+    return head;
 }
 
-void map_set(struct map_t *m, char *name, char *value)
+void map_set(struct map_head *m, char *name, char *value)
 {
-    struct map_t *mp;
-    if(m->name == NULL)
+    if ((NULL == m) || (NULL == name) || (NULL == value))
     {
-        m->name = (char *) malloc(strlen(name) + 1);
-        strcpy(m->name, name);
-        m->value = (char *) malloc(strlen(value) + 1);
-        strcpy(m->value, value);
-        m->nxt = NULL;
         return;
     }
-    for(mp = m; ; mp = mp->nxt)
+    if (NULL == m->first)
     {
-        if (!strcmp(name, mp->name))
+        struct map_t *e = (struct map_t *) malloc(sizeof(struct map_t));
+        e->nxt = NULL;
+        e->name = (char *) malloc(strlen(name) + 1);
+        strcpy(e->name, name);
+        e->value = (char *) malloc(strlen(value) + 1);
+        strcpy(e->value, value);
+        m->first = e;
+        return;
+    }
+    struct map_t *ptr;
+    struct map_t *last;
+    for (ptr = m->first; ptr != NULL; ptr = ptr->nxt)
+    {
+        if (0 == strcmp(ptr->name, name))
         {
-            if (mp->value != NULL)
+            if (NULL != ptr->value)
             {
-                free(mp->value);
-                mp->value = (char *) malloc(strlen(value) + 1);
-                strcpy(mp->value, value);
-                return;
+                free(ptr->value);
             }
-        }
-        if (mp->nxt == NULL)
-        {
-            mp->nxt = (struct map_t *) malloc(sizeof(struct map_t));
-            mp = mp->nxt;
-            mp->name = (char *) malloc(strlen(name) + 1);
-            strcpy(mp->name, name);
-            mp->value = (char *) malloc(strlen(value) + 1);
-            strcpy(mp->value, value);
-            mp->nxt = NULL;
+            ptr->value = (char *) malloc(strlen(value) + 1);
+            strcpy(ptr->value, value);
             return;
         }
+        last = ptr;
     }
+    struct map_t *e = (struct map_t *) malloc(sizeof(struct map_t));
+    e->nxt = NULL;
+    e->name = (char *) malloc(strlen(name) + 1);
+    strcpy(e->name, name);
+    e->value = (char *) malloc(strlen(value) + 1);
+    strcpy(e->value, value);
+    last->nxt = e;
 }
 
-char *map_get(struct map_t *m, char *name)
+char *map_get(struct map_head *m, char *name)
 {
     return map_get_def(m, name, NULL);
 }
 
-char *map_get_def(struct map_t *m, char *name, char *dflt)
+char *map_get_def(struct map_head *m, char *name, char *dflt)
 {
+    if ((NULL == m) || (NULL == m->first) || (NULL == name))
+    {
+        return dflt;
+    }
     struct map_t *mp;
-    for(mp = m; mp != NULL; mp = mp->nxt)
+    for (mp = m->first; mp != NULL; mp = mp->nxt)
     {
         if (!strcmp(name, mp->name))
         {
@@ -114,7 +121,38 @@ char *map_get_def(struct map_t *m, char *name, char *dflt)
     return dflt;
 }
 
-int map_del(struct map_t *m, char *name)
+int map_del(struct map_head *m, char *name)
 {
+    if ((NULL == m) || (NULL == m->first) || (NULL == name))
+    {
+        return 0;
+    }
+    struct map_t *mx;
+    mx = m->first;
+    if (0 == strcmp(mx->name, name))
+    {
+        free(mx->name);
+        free(mx->value);
+        m->first = mx->nxt;
+        free(mx);
+        return 1;
+    }
+    struct map_t *flwr;
+    for (mx = m->first; mx != NULL; mx = mx->nxt)
+    {
+        flwr = mx->nxt;
+        if (NULL == flwr)
+        {
+            break;
+        }
+        if (0 == strcmp(flwr->name, name))
+        {
+            free(flwr->name);
+            free(flwr->value);
+            mx->nxt = flwr->nxt;
+            free(flwr);
+            return 1;
+        }
+    }
     return 0;
 }

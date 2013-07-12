@@ -52,11 +52,17 @@ struct map_t
    char *value;
 };
 
-struct map_t *map_create();
-void map_set(struct map_t *m, char *name, char *value);
-char *map_get_def(struct map_t *m, char *name, char *dflt);
-char *map_get(struct map_t *m, char *name);
-int map_del(struct map_t *m, char *name);
+struct map_head
+{
+    char *name;
+    struct map_t *first;
+};
+
+struct map_head *map_create(char *name);
+void map_set(struct map_head *m, char *name, char *value);
+char *map_get_def(struct map_head *m, char *name, char *dflt);
+char *map_get(struct map_head *m, char *name);
+int map_del(struct map_head *m, char *name);
 
 #endif
 

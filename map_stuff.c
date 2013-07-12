@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include "map_lib.h"
 
-void display_both(struct map_t *m, char *first)
+void display_both(struct map_head *m, char *first)
 {
     printf("Std: %s %s\n", first, map_get(m, first));
     printf("Def: %s %s\n", first, map_get_def(m, first, "Default Value"));
 }
 
-void map_test(struct map_t *test)
+void map_test(struct map_head *test)
 {
     printf("==============================================\n");
 
@@ -22,8 +22,8 @@ void map_test(struct map_t *test)
 
 int main(int argc, char** argv)
 {
-    struct map_t *test_map;
-    test_map = map_create();
+    struct map_head *test_map;
+    test_map = map_create("Test");
 
     map_set(test_map, "One", "Won");
     map_set(test_map, "Two", "Too");
