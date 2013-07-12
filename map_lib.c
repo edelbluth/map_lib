@@ -42,6 +42,7 @@
 // * map -> mp (avoid reserved name collision)
 // * Added Delete-Key functionality
 // * Added List Head struct
+// * Added default value if value not found
 // -------------------------------------------------------------------
 
 #include "map_lib.h"

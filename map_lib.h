@@ -41,6 +41,7 @@
 // * Minor Refactoring
 // * Added Delete-Key functionality
 // * Added List Head struct
+// * Added default value if value not found
 // -------------------------------------------------------------------
 
 #ifndef __MAP_LIB_H__
@@ -59,10 +60,45 @@ struct map_head
     struct map_t *first;
 };
 
+/**
+ * @brief Create a new "associative array", and give it a name
+ * @param name Name for the new "associative array"
+ * @return Pointer to the new "associative array"
+ */
 struct map_head *map_create(char *name);
+
+/**
+ * @brief Set a value in the "associative array"
+ * @param m Map Head of the "associative array"
+ * @param name Key in the "associative array"
+ * @param value Value in the "associative array"
+ */
 void map_set(struct map_head *m, char *name, char *value);
+
+/**
+ * @brief Get a value from the "associative array". If not found, return a default value.
+ * @param m Map Head of the "associative array"
+ * @param name Key in the "associative array"
+ * @param dflt Value to return if key was not found in "associative array"
+ * @return The value of the key if found, default value otherwise.
+ */
 char *map_get_def(struct map_head *m, char *name, char *dflt);
+
+/**
+ * @brief Get a value from the "associative array". If not found, return NULL.
+ * @param m Map Head of the "associative array"
+ * @param name Key in the "associative array"
+ * @return The value of the key if found, NULL otherwise.
+ */
 char *map_get(struct map_head *m, char *name);
+
+/**
+ * @brief Delete an element from the "associative array"
+ * @param m Map Head of the "associative array"
+ * @param name Key in the "associative array"
+ * @retval 0 if no element has been deleted
+ * @retval 1 if element has been deleted
+ */
 int map_del(struct map_head *m, char *name);
 
 #endif
