@@ -12,9 +12,13 @@ void map_test(struct map_head *test)
     printf("==============================================\n");
 
     // display them out of order
-    display_both(test, "Two");
-    display_both(test, "Four");
     display_both(test, "One");
+    display_both(test, "Two");
+    display_both(test, "Three");
+    display_both(test, "Four");
+    display_both(test, "Five");
+    display_both(test, "Six");
+    display_both(test, "Seven");
     display_both(test, "Eight");
 
     printf("\n");
