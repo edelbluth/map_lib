@@ -115,7 +115,7 @@ char *map_get_def(struct map_head *m, char *name, char *dflt)
     struct map_t *mp;
     for (mp = m->first; mp != NULL; mp = mp->nxt)
     {
-        if (!strcmp(name, mp->name))
+        if (0 == strcmp(name, mp->name))
         {
             return mp->value;
         }
