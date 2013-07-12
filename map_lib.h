@@ -39,7 +39,8 @@
 // Changes by Juergen Edelbluth
 // * Formatting
 // * Minor Refactoring
-// * Added Delete-Key functionality (stub)
+// * Added Delete-Key functionality
+// * Added List Head struct
 // -------------------------------------------------------------------
 
 #ifndef __MAP_LIB_H__

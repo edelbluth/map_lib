@@ -40,7 +40,8 @@
 // * Formatting
 // * stricmp -> strcmp (making the map case sensitive)
 // * map -> mp (avoid reserved name collision)
-// * Added Delete-Key functionality (stub)
+// * Added Delete-Key functionality
+// * Added List Head struct
 // -------------------------------------------------------------------
 
 #include "map_lib.h"
