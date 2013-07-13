@@ -55,6 +55,10 @@ struct map_head *map_create(char* name)
     struct map_head *head = (struct map_head *) malloc(sizeof(struct map_head));
     head->first = NULL;
     head->name = (char *) malloc(strlen(name) + 1);
+    if (NULL == head->name)
+    {
+        return NULL;
+    }
     strcpy(head->name, name);
     return head;
 }
@@ -68,10 +72,25 @@ void map_set(struct map_head *m, char *name, char *value)
     if (NULL == m->first)
     {
         struct map_t *e = (struct map_t *) malloc(sizeof(struct map_t));
+        if (NULL == e)
+        {
+            return;
+        }
         e->nxt = NULL;
         e->name = (char *) malloc(strlen(name) + 1);
+        if (NULL == e->name)
+        {
+            free(e);
+            return;
+        }
         strcpy(e->name, name);
         e->value = (char *) malloc(strlen(value) + 1);
+        if (NULL == e->value)
+        {
+            free(e->name);
+            free(e);
+            return;
+        }
         strcpy(e->value, value);
         m->first = e;
         return;
@@ -93,10 +112,25 @@ void map_set(struct map_head *m, char *name, char *value)
         last = ptr;
     }
     struct map_t *e = (struct map_t *) malloc(sizeof(struct map_t));
+    if (NULL == e)
+    {
+        return;
+    }
     e->nxt = NULL;
     e->name = (char *) malloc(strlen(name) + 1);
+    if (NULL == e->name)
+    {
+        free(e);
+        return;
+    }
     strcpy(e->name, name);
     e->value = (char *) malloc(strlen(value) + 1);
+    if (NULL == e->value)
+    {
+        free(e->name);
+        free(e);
+        return;
+    }
     strcpy(e->value, value);
     last->nxt = e;
 }
