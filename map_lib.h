@@ -60,6 +60,8 @@ struct map_head
     struct map_t *first;
 };
 
+#ifndef SHARED /* no shared lib */
+
 /**
  * @brief Create a new "associative array", and give it a name
  * @param name Name for the new "associative array"
@@ -100,6 +102,16 @@ char *map_get(struct map_head *m, char *name);
  * @retval 1 if element has been deleted
  */
 int map_del(struct map_head *m, char *name);
+
+#else /* make it a shared lib */
+
+extern struct map_head *map_create(char *name);
+extern void map_set(struct map_head *m, char *name, char *value);
+extern char *map_get_def(struct map_head *m, char *name, char *dflt);
+extern char *map_get(struct map_head *m, char *name);
+
+#endif
+
 
 #endif
 
